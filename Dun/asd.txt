@@ -1,0 +1,118 @@
+#include <stdio.h>
+#include <math.h>
+struct pixel
+{
+    int b;
+    int g;
+    int r;
+} typedef pixel;
+int main()
+{
+    FILE* fptr = fopen("pic (2).bmp", "rb");
+    char file_type[3] = {'\0'};
+    file_type[0] = fgetc(fptr);
+    file_type[1] = fgetc(fptr);
+    //unsigned int sizse = fscanf(fptr, "%x");
+    unsigned char file_size[4] = {'\0'};
+    
+    int size = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        size = fgetc(fptr) * pow(256, i) + size;
+    }
+    printf("File type : %s\n", file_type);
+
+    printf("Size : %d", size);
+    for (int i = 0; i < 4; i++)
+    {
+        fgetc(fptr);
+    }
+    printf("\nReserved : ");
+    unsigned offset = fgetc(fptr);
+    printf("offset : %u\n", offset);
+    for (int i = 0; i < 3; i++)
+    {
+        fgetc(fptr);
+    }
+    unsigned infosize = fgetc(fptr);
+    printf("InfoSize : %u", infosize);
+    for(int i = 0; i < 3; i++)
+    {
+        fgetc(fptr);
+    }
+    unsigned width = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        width = fgetc(fptr) * pow(256, i) + width;
+    }
+    printf("\nWidth : %u", width);
+    unsigned height = 0;
+    for (int i = 0; i < 4; i++)
+    {
+        height = fgetc(fptr) * pow(256, i) + height;
+    }
+    printf("\nHeight : %u", height);
+    unsigned plane = 0;
+    for(int i = 0; i < 2; i++)
+    {
+        plane = fgetc(fptr) * pow(256, i) + plane;
+    }
+    printf("\nPlane : %u", plane);
+    unsigned bpp = 0;
+    for(int i = 0; i < 2; i++)
+    {
+        bpp = fgetc(fptr) * pow(256, i) + bpp;
+    }
+    printf("\nBits per pixel : %u", bpp);
+    unsigned compression = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        compression = fgetc(fptr) * pow(256, i) + compression;
+    }
+    printf("\nCompression : %u", compression);
+    unsigned image_size = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        image_size = fgetc(fptr) * pow(256, i) + image_size;
+    }
+    printf("\nImageSize : %u", image_size);
+    unsigned xr = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        xr = fgetc(fptr) * pow(256, i) + xr;
+    }
+    printf("\nXResolution : %u", xr);
+    unsigned yr = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        yr = fgetc(fptr) * pow(256, i) + yr;
+    }
+    printf("\nYResolution : %u", yr);
+    unsigned color = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        color = fgetc(fptr) * pow(256, i) + color;
+    }
+    printf("\nColor : %u", color);
+    unsigned impc = 0;
+    for(int i = 0; i < 4; i++)
+    {
+        impc = fgetc(fptr) * pow(256, i) + impc;
+    }
+    printf("\nImportant color : %u", impc);
+    pixel** pixels = (pixel**)calloc(height, sizeof(pixel*));
+    for (int i = 0; i < height; i++)
+    {
+        pixels[i] = (pixel*)calloc(width, sizeof(pixel));
+    }
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            pixels[i][j].b = fgetc(fptr);
+            pixels[i][j].g = fgetc(fptr);
+            pixels[i][j].r = fgetc(fptr);
+        }
+    }
+    
+}
